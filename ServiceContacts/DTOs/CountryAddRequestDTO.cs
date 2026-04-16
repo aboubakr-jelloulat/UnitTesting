@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ServiceContacts.DTOs
+namespace ServiceContacts.DTOs;
+
+public class CountryAddRequestDTO
 {
-    internal class CountryAddRequestDTO
-    {
-    }
+    public string? CountryName { get; set; }
+
+    public Country ToCountry() => new Country() { CountryName = CountryName };
 }

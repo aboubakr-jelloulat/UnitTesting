@@ -1,7 +1,10 @@
-﻿namespace ServiceContacts
-{
-    public class Class1
-    {
+﻿using ServiceContacts.DTOs;
 
-    }
+namespace ServiceContacts;
+
+public interface ICountriesService
+{
+
+    CountryResponseDTO AddCountry(CountryAddRequestDTO country);
+
 }
