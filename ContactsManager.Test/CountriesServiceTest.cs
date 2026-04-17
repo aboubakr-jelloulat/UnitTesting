@@ -91,7 +91,7 @@ public class CountriesServiceTest
         Assert.Empty(countries);
     }
 
-    // 6. After adding → should return all countries
+    // After adding → should return all countries
     [Fact]
     public void GetAllCountries_AfterAddingCountries_ReturnsList()
     {
@@ -119,7 +119,11 @@ public class CountriesServiceTest
 
         foreach (var item in expected)
         {
-            Assert.Contains(countries, c => c.Id == item.Id);
+            //Assert.Contains(countries, c => c.Id == item.Id);
+
+            // or override the Equal, because Equal is compare the refrences 
+
+            Assert.Contains(item, countries); // Contains by default use Equal
         }
     }
 

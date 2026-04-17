@@ -41,7 +41,7 @@ public class CountriesService : ICountriesService
    
     public List<CountryResponseDTO> GetAllCountries()
     {
-        throw new NotImplementedException();
+        return _countries.Select(country => country.ToCountryResponse()).ToList();
     }
 
 
