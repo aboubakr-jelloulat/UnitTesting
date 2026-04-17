@@ -15,6 +15,8 @@ public class CountriesServiceTest
         _countriesService = new CountriesService();
     }
 
+    #region AddCountryUniteTest
+
     // Null request -> should throw ArgumentNullException
     [Fact]
     public void AddCountry_NullRequest_ThrowsArgumentNullException()
@@ -72,4 +74,54 @@ public class CountriesServiceTest
         // Assert
         Assert.NotEqual(Guid.Empty, response.Id);
     }
+
+    #endregion
+
+
+    #region GetAllCountriesUniteTest
+
+    // Empty list initially
+    [Fact]
+    public void GetAllCountries_Initial_ShouldBeEmpty()
+    {
+        // Act
+        var countries = _countriesService.GetAllCountries();
+
+        // Assert
+        Assert.Empty(countries);
+    }
+
+    // 6. After adding → should return all countries
+    [Fact]
+    public void GetAllCountries_AfterAddingCountries_ReturnsList()
+    {
+        // Arrange
+        var addCountries = new List<CountryAddRequestDTO>
+        {
+            new() { CountryName = "Sweden" },
+            new() { CountryName = "Estonia" },
+            new() { CountryName = "Finland" }
+        };
+
+        var expected = new List<CountryResponseDTO>();
+
+        // Act
+        foreach (var c in addCountries)
+        {
+            var response = _countriesService.AddCountry(c);
+            expected.Add(response);
+        }
+
+        var countries = _countriesService.GetAllCountries();
+
+        // Assert
+        Assert.Equal(expected.Count, countries.Count);
+
+        foreach (var item in expected)
+        {
+            Assert.Contains(countries, c => c.Id == item.Id);
+        }
+    }
+
+    #endregion
 }

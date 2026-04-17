@@ -13,6 +13,8 @@ public class CountriesService : ICountriesService
         _countries = new();
     }
 
+    
+
     public CountryResponseDTO AddCountry(CountryAddRequestDTO model)
     {
         if (model is null)
@@ -32,4 +34,19 @@ public class CountriesService : ICountriesService
 
         return country.ToCountryResponse();
     }
+
+    
+
+
+   
+    public List<CountryResponseDTO> GetAllCountries()
+    {
+        throw new NotImplementedException();
+    }
+
+
+
+
+
+   
 }
