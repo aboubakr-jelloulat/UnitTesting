@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Entities;
+using Xunit;
 using ServiceContacts.DTOs;
 using ServiceContacts;
 using Services;
-
 
 namespace ContactsManager.Test;
 
@@ -13,88 +10,66 @@ public class CountriesServiceTest
 {
     private readonly ICountriesService _countriesService;
 
-    public CountriesServiceTest(ICountriesService countriesService)
+    public CountriesServiceTest()
     {
         _countriesService = new CountriesService();
     }
 
-    // When CountryAddRequestDTO is null it should throw ArgumentException
-
+    // Null request -> should throw ArgumentNullException
     [Fact]
-
-    public void CountryAddRequestDTO_Null_Test()
+    public void AddCountry_NullRequest_ThrowsArgumentNullException()
     {
-        // Arrage
+        // Arrange
         CountryAddRequestDTO? request = null;
-
-        // Assert
-        Assert.Throws<ArgumentNullException>(() =>
-        {
-            //  Act
-            _countriesService.AddCountry(request);
-
-        });
-
-    }
-
-
-    // When CountryName is null it should throw ArgumentException
-
-    [Fact]
-
-    public void CountryName_Null_Test()
-    {
-        // Arrage
-        CountryAddRequestDTO? request1 = new() { CountryName = "China" };
-
-        CountryAddRequestDTO? request2 = new() { CountryName = "China" };
-
-        // Assert
-        Assert.Throws<ArgumentException>(() =>
-        {
-            //  Act
-            _countriesService.AddCountry(request1);
-            _countriesService.AddCountry(request2);
-
-        });
-    }
-
-
-    // When CountryName is duplicate it should throw ArgumentException
-
-    [Fact]
-
-    public void CountryNameIsDuplicate_Test()
-    {
-        // Arrage
-        CountryAddRequestDTO? request = null;
-
-        // Assert
-        Assert.Throws<ArgumentNullException>(() =>
-        {
-            //  Act
-            _countriesService.AddCountry(request);
-
-        });
-
-    }
-
-
-    // When you supply proper country name it should insert add to the existing list of countries 
-
-    [Fact]
-
-    public void CountryProperty_Test()
-    {
-        // Arrage
-        CountryAddRequestDTO? request = new() { CountryName = "Norway"};
 
         // Act
-        CountryResponseDTO response = _countriesService.AddCountry(request);
+        Action act = () => _countriesService.AddCountry(request);
 
         // Assert
-        Assert.True(response.Id != Guid.Empty);
+        Assert.Throws<ArgumentNullException>(act);
     }
 
+    // Null or empty country name -> should throw ArgumentException
+    [Fact]
+    public void AddCountry_NullCountryName_ThrowsArgumentException()
+    {
+        // Arrange
+        var request = new CountryAddRequestDTO { CountryName = null };
 
+        // Act
+        Action act = () => _countriesService.AddCountry(request);
+
+        // Assert
+        Assert.Throws<ArgumentException>(act);
+    }
+
+    // Duplicate country -> should throw ArgumentException
+    [Fact]
+    public void AddCountry_DuplicateCountryName_ThrowsArgumentException()
+    {
+        // Arrange
+        var request = new CountryAddRequestDTO { CountryName = "China" };
+
+        _countriesService.AddCountry(request); // first insert
+
+        // Act
+        Action act = () => _countriesService.AddCountry(request);
+
+        // Assert
+        Assert.Throws<ArgumentException>(act);
+    }
+
+    // Valid request -> should return response with non empty Id
+    [Fact]
+    public void AddCountry_ValidRequest_ReturnsCountryResponse()
+    {
+        // Arrange
+        var request = new CountryAddRequestDTO { CountryName = "Norway" };
+
+        // Act
+        var response = _countriesService.AddCountry(request);
+
+        // Assert
+        Assert.NotEqual(Guid.Empty, response.Id);
+    }
 }

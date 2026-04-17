@@ -7,4 +7,6 @@ public interface ICountriesService
 
     CountryResponseDTO AddCountry(CountryAddRequestDTO country);
 
+    List<CountryResponseDTO> GetAllCountries();
+
 }
