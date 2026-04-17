@@ -128,4 +128,40 @@ public class CountriesServiceTest
     }
 
     #endregion
+
+
+    #region GetCountryById
+
+    [Fact]
+    public void GetCountryById_NullId_ReturnsNull()
+    {
+        // Arrange
+        Guid? id = null;
+
+        // Act
+        var response = _countriesService.GetCountryById(id);
+
+        // Assert
+        Assert.Null(response);
+    }
+
+    [Fact]
+    public void AddCountry_ValidInput_CanBeRetrievedById()
+    {
+        // Arrange
+        var request = new CountryAddRequestDTO
+        {
+            CountryName = "Palestine"
+        };
+
+        // Act
+        var addedCountry = _countriesService.AddCountry(request);
+        var retrievedCountry = _countriesService.GetCountryById(addedCountry.Id);
+
+        // Assert
+        Assert.NotNull(retrievedCountry);
+        Assert.Equal(addedCountry, retrievedCountry);
+    }
+
+    #endregion
 }

@@ -44,9 +44,14 @@ public class CountriesService : ICountriesService
         return _countries.Select(country => country.ToCountryResponse()).ToList();
     }
 
+    public CountryResponseDTO? GetCountryById(Guid? id)
+    {
+        if (id is null) return null;
 
+        Country? country = _countries.FirstOrDefault(c => c.Id == id);
 
+        if (country is null) return null;
 
-
-   
+        return country.ToCountryResponse();
+    }
 }

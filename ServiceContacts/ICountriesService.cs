@@ -9,4 +9,6 @@ public interface ICountriesService
 
     List<CountryResponseDTO> GetAllCountries();
 
+    CountryResponseDTO? GetCountryById(Guid? id);
+
 }
