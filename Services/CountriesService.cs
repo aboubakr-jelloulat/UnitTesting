@@ -55,3 +55,11 @@ public class CountriesService : ICountriesService
         return country.ToCountryResponse();
     }
 }
+
+/*
+    A good test name answers 3 questions:
+
+        What method? → AddCountry
+        What situation? → ValidInput
+        What result? → ReturnsCountry
+*/
