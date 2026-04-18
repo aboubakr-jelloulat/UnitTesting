@@ -147,4 +147,80 @@ public class PersonServiceTest
 
 
     #endregion
+
+    #region GetAllPersons
+
+    [Fact]
+    public void GetAllPersons_Initial_ShouldBeEmpty()
+    {
+        // Act
+        var people = _personService.GetAllPersons();
+
+        // Assert
+        Assert.Empty(people);
+    }
+
+    [Fact]
+
+    public void GetAllPersons_AfterAddingPersons_ReturnsListOfPerson()
+    {
+        // Act
+
+        List<PersonAddRequestDTO> addPersons = new()
+        {
+            new()
+            {
+                PersonName = "Aboubakr",
+                Email = "ajelloul@gmail.com",
+                Address = "Java Street, Stockholm",
+                CountryId = Guid.NewGuid(),
+                DateOfBirth = DateTime.Now,
+                Gender = GenderOptions.Male,
+                ReceiveNewsLetters = true
+
+            },
+            new()
+            {
+                PersonName = "Ayoub",
+                Email = "abouatr@gmail.com",
+                Address = "Helsinki Street, Helsinki",
+                CountryId = Guid.NewGuid(),
+                DateOfBirth = DateTime.Now,
+                Gender = GenderOptions.Male,
+                ReceiveNewsLetters = true
+
+            },
+            new()
+            {
+                PersonName = "Emma",
+                Email = "Emma@gmail.com",
+                Address = "Rue Esquermoise , Lille",
+                CountryId = Guid.NewGuid(),
+                DateOfBirth = DateTime.Now,
+                Gender = GenderOptions.Female,
+                ReceiveNewsLetters = true
+
+            }
+
+        };
+
+        var expected = new List<PersonResponseDTO>();
+
+        foreach (var p in addPersons)
+        {
+            var response = _personService.AddPerson(p);
+            expected.Add(response);
+        }
+
+        var persons = _personService.GetAllPersons();
+
+        foreach (var person in persons)
+        {
+            Assert.Contains(person, expected);
+        }
+
+
+    }
+
+    #endregion
 }

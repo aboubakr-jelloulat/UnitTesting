@@ -58,7 +58,7 @@ public class PersonService : IPersonService
 
     public List<PersonResponseDTO> GetAllPersons()
     {
-        throw new NotImplementedException();
+        return _people.Select(p => p.ToPersonResponse()).ToList();
     }
 
     public PersonResponseDTO? GetPersonById(Guid? id)
