@@ -60,4 +60,17 @@ public class PersonService : IPersonService
     {
         throw new NotImplementedException();
     }
+
+    public PersonResponseDTO? GetPersonById(Guid? id)
+    {
+        if (id is null)
+            return null;
+
+        Person? person = _people.FirstOrDefault(p => p.Id == id);
+
+        if (person is null)
+            return null;
+
+        return person.ToPersonResponse();
+    }
 }

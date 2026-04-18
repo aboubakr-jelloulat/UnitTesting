@@ -11,4 +11,6 @@ public interface IPersonService
 
     List<PersonResponseDTO> GetAllPersons();
 
+    PersonResponseDTO? GetPersonById(Guid? id);
+
 }

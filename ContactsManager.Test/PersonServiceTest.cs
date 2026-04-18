@@ -11,10 +11,12 @@ namespace ContactsManager.Test;
 public class PersonServiceTest
 {
     private readonly IPersonService _personService;
+    private readonly ICountriesService _countriesService;
 
     public PersonServiceTest()
     {
         _personService = new PersonService();
+        _countriesService = new CountriesService();
     }
 
     public GenderOptions? GenderOption { get; private set; }
@@ -93,8 +95,56 @@ public class PersonServiceTest
     }
 
 
+    #endregion
+
+
+    #region GetPersonById
+
+    [Fact]
+
+    public void GetPersonById_IdIsNull_ReturnNull()
+    {
+        // Arrange
+        Guid? Id = null;
+
+        // Act
+        PersonResponseDTO? personResponse = _personService.GetPersonById(Id);
+
+        // Assert
+        Assert.Null(personResponse);
+    }
+
+    [Fact]
+    public void GetPersonById_ValidInput_CanBeRetrievedById()
+    {
+        CountryAddRequestDTO countryAddRequest = new CountryAddRequestDTO() { CountryName = "Sweden"};
+
+        CountryResponseDTO countryResponse = _countriesService.AddCountry(countryAddRequest);
+
+        // Arrange
+        PersonAddRequestDTO? personAddRequest = new()
+        {
+            PersonName = "Aboubakr",
+            Email = "ajelloul@gmail.com",
+            Address = "Java Street, Stockholm",
+            CountryId = countryResponse.Id,
+            DateOfBirth = DateTime.Now,
+            Gender = GenderOptions.Male,
+            ReceiveNewsLetters = true
+
+        };
+
+        // Act
+
+        PersonResponseDTO addedPerson = _personService.AddPerson(personAddRequest);
+
+        PersonResponseDTO? retrievedPerson = _personService.GetPersonById(addedPerson.Id);
+
+        // Assert
+        Assert.NotNull(retrievedPerson);
+        Assert.Equal(retrievedPerson, addedPerson);
+    }
 
 
     #endregion
-
 }
