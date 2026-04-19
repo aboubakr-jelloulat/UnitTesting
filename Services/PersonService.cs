@@ -135,8 +135,62 @@ public class PersonService : IPersonService
         return matchingPersons;
     }
 
-    public List<PersonResponseDTO> GetSortedPersons(List<PersonResponseDTO> allpersons, string sortedBy, SortedOrderOptions SortOrder)
+    public List<PersonResponseDTO> GetSortedPersons(
+    List<PersonResponseDTO> allPersons,
+    string sortedBy,
+    SortedOrderOptions sortOrder)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(sortedBy))
+            return allPersons;
+
+        List<PersonResponseDTO> sortedPersons = (sortedBy, sortOrder) switch
+        {
+            
+            (nameof(PersonResponseDTO.PersonName), SortedOrderOptions.ASC) =>
+                allPersons.OrderBy(p => p.PersonName, StringComparer.OrdinalIgnoreCase).ToList(),
+
+            (nameof(PersonResponseDTO.PersonName), SortedOrderOptions.DESC) =>
+                allPersons.OrderByDescending(p => p.PersonName, StringComparer.OrdinalIgnoreCase).ToList(),
+
+            
+            (nameof(PersonResponseDTO.Email), SortedOrderOptions.ASC) =>
+                allPersons.OrderBy(p => p.Email).ToList(),
+
+            (nameof(PersonResponseDTO.Email), SortedOrderOptions.DESC) =>
+                allPersons.OrderByDescending(p => p.Email).ToList(),
+
+            
+            (nameof(PersonResponseDTO.DateOfBirth), SortedOrderOptions.ASC) =>
+                allPersons.OrderBy(p => p.DateOfBirth).ToList(),
+
+            (nameof(PersonResponseDTO.DateOfBirth), SortedOrderOptions.DESC) =>
+                allPersons.OrderByDescending(p => p.DateOfBirth).ToList(),
+
+            
+            (nameof(PersonResponseDTO.Age), SortedOrderOptions.ASC) =>
+                allPersons.OrderBy(p => p.Age).ToList(),
+
+            (nameof(PersonResponseDTO.Age), SortedOrderOptions.DESC) =>
+                allPersons.OrderByDescending(p => p.Age).ToList(),
+
+            
+            (nameof(PersonResponseDTO.Country), SortedOrderOptions.ASC) =>
+                allPersons.OrderBy(p => p.Country).ToList(),
+
+            (nameof(PersonResponseDTO.Country), SortedOrderOptions.DESC) =>
+                allPersons.OrderByDescending(p => p.Country).ToList(),
+
+            
+            (nameof(PersonResponseDTO.Gender), SortedOrderOptions.ASC) =>
+                allPersons.OrderBy(p => p.Gender).ToList(),
+
+            (nameof(PersonResponseDTO.Gender), SortedOrderOptions.DESC) =>
+                allPersons.OrderByDescending(p => p.Gender).ToList(),
+
+            
+            _ => allPersons
+        };
+
+        return sortedPersons;
     }
 }

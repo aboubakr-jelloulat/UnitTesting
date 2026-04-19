@@ -1,4 +1,5 @@
 ﻿using Entities;
+using ServiceContacts.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -55,6 +56,24 @@ public class PersonResponseDTO
     {
         return base.GetHashCode();
     }
+
+    public PersonUpdateRequestDTO ToPersonUpdateRequest()
+    {
+        return new PersonUpdateRequestDTO()
+        {
+            Id = Id,
+            PersonName = PersonName,
+            Address = Adress,
+            CountryId = CountryId,
+            DateOfBirth = DateOfBirth,
+            Email = Email,
+            ReceiveNewsLetters = ReceiveNewsLetters,
+
+            Gender = !string.IsNullOrWhiteSpace(Gender) && Enum.TryParse<GenderOptions>(Gender, true, out var result) ? result : null
+
+        };
+    }
+
 }
 
 
