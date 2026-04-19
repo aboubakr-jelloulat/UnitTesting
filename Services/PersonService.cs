@@ -1,6 +1,7 @@
 ﻿using Entities;
 using ServiceContacts;
 using ServiceContacts.DTOs;
+using ServiceContacts.Enums;
 using Services.Utils;
 using System;
 using System.Collections.Generic;
@@ -132,5 +133,10 @@ public class PersonService : IPersonService
         };
 
         return matchingPersons;
+    }
+
+    public List<PersonResponseDTO> GetSortedPersons(List<PersonResponseDTO> allpersons, string sortedBy, SortedOrderOptions SortOrder)
+    {
+        throw new NotImplementedException();
     }
 }

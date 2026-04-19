@@ -359,4 +359,73 @@ public class PersonServiceTest
 
 
 
+    #region GetSortedPersons
+
+
+    [Fact]
+    public void GetSortedPersons_SortingByPersonNameASCandDESC_ReturnMatchingPerson()
+    {
+
+        // Act
+
+        List<PersonAddRequestDTO> addPersons = new()
+        {
+            new()
+            {
+                PersonName = "Aboubakr",
+                Email = "ajelloul@gmail.com",
+                Address = "Java Street, Stockholm",
+                CountryId = Guid.NewGuid(),
+                DateOfBirth = DateTime.Now,
+                Gender = GenderOptions.Male,
+                ReceiveNewsLetters = true
+
+            },
+            new()
+            {
+                PersonName = "Ayoub",
+                Email = "abouatr@gmail.com",
+                Address = "Helsinki Street, Helsinki",
+                CountryId = Guid.NewGuid(),
+                DateOfBirth = DateTime.Now,
+                Gender = GenderOptions.Male,
+                ReceiveNewsLetters = true
+
+            },
+            new()
+            {
+                PersonName = "Emma",
+                Email = "Emma@gmail.com",
+                Address = "Rue Esquermoise , Lille",
+                CountryId = Guid.NewGuid(),
+                DateOfBirth = DateTime.Now,
+                Gender = GenderOptions.Female,
+                ReceiveNewsLetters = true
+
+            }
+
+        };
+
+        var expected = new List<PersonResponseDTO>();
+
+        foreach (var p in addPersons)
+        {
+            var response = _personService.AddPerson(p);
+            expected.Add(response);
+        }
+
+        var Sortedpersons = _personService.GetSortedPersons(_personService.GetAllPersons(), nameof(Person.PersonName), SortedOrderOptions.DESC);
+
+        var expectedSortedPerson = _personService.GetAllPersons().OrderByDescending(p => p.PersonName).ToList();
+
+
+        // Assert
+        for (int i = 0; i < expectedSortedPerson.Count; ++i)
+            Assert.Equal(expectedSortedPerson[i], Sortedpersons[i]);
+
+    }
+
+
+    #endregion
+
 }
