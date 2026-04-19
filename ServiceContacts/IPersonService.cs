@@ -13,4 +13,6 @@ public interface IPersonService
 
     PersonResponseDTO? GetPersonById(Guid? id);
 
+    List<PersonResponseDTO> GetFiltredPersons(string searchBy, string? searchString);
+
 }
