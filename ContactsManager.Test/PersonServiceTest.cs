@@ -357,8 +357,6 @@ public class PersonServiceTest
 
     #endregion
 
-
-
     #region GetSortedPersons
 
 
@@ -427,8 +425,6 @@ public class PersonServiceTest
 
 
     #endregion
-
-
 
     #region UpdatePerson
 
@@ -551,5 +547,66 @@ public class PersonServiceTest
 
     #endregion
 
+
+    #region DeletePerson
+
+    [Fact]
+    public void DeletePerson_InvalidPersonId_ThrowException()
+    {
+        CountryAddRequestDTO countryAddRequest = new CountryAddRequestDTO()
+        {
+            CountryName = "Lithuania"
+
+        };
+
+        CountryResponseDTO countryResponse = _countriesService.AddCountry(countryAddRequest);
+
+        PersonAddRequestDTO personAddRequest = new()
+        {
+            CountryId = countryResponse.Id,
+            PersonName = "Linta evatua",
+            Address = "xx Streetm Lithuania",
+            Gender = GenderOptions.Female
+        };
+
+        PersonResponseDTO personResponse = _personService.AddPerson(personAddRequest);
+
+         
+
+
+        //Assert
+        Assert.False(_personService.DeletePerson(Guid.NewGuid()));
+    }
+
+
+    [Fact]
+    public void DeletePerson_validPersonId_PersonDeleteReturnTrue()
+    {
+        CountryAddRequestDTO countryAddRequest = new CountryAddRequestDTO()
+        {
+            CountryName = "Lithuania"
+
+        };
+
+        CountryResponseDTO countryResponse = _countriesService.AddCountry(countryAddRequest);
+
+        PersonAddRequestDTO personAddRequest = new()
+        {
+            CountryId = countryResponse.Id,
+            PersonName = "Linta evatua",
+            Address = "xx Streetm Lithuania",
+            Gender = GenderOptions.Female
+        };
+
+        PersonResponseDTO personResponse = _personService.AddPerson(personAddRequest);
+
+
+
+
+        //Assert
+        Assert.True(_personService.DeletePerson(personResponse.Id));
+    }
+
+    #endregion
 
 }

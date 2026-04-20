@@ -6,6 +6,7 @@ using Services.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Text;
 using Xunit.Abstractions;
 
@@ -218,5 +219,19 @@ public class PersonService : IPersonService
         
 
         return personFromdb.ToPersonResponse();
+    }
+
+
+
+    public bool DeletePerson(Guid? Id)
+    {
+        if (Id is null)
+            return false;
+
+        Person? personFromdb = _people.FirstOrDefault(p => p.Id == Id);
+        if (personFromdb is null)
+            return false;
+
+        return _people.Remove(personFromdb);
     }
 }

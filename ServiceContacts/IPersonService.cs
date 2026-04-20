@@ -21,4 +21,6 @@ public interface IPersonService
 
 
     PersonResponseDTO UpdatePerson(PersonUpdateRequestDTO? model);
+
+    bool DeletePerson(Guid? Id);
 }
