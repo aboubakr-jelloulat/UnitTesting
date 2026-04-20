@@ -193,4 +193,9 @@ public class PersonService : IPersonService
 
         return sortedPersons;
     }
+
+    public PersonResponseDTO UpdatePerson(PersonUpdateRequestDTO? model)
+    {
+        throw new NotImplementedException();
+    }
 }

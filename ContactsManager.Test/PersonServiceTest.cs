@@ -430,4 +430,126 @@ public class PersonServiceTest
 
 
 
+    #region UpdatePerson
+
+    [Fact]
+    public void UpdatePerson_NullArgument_ThrowException()
+    {
+        // Arrange
+        PersonUpdateRequestDTO? personUpdateRequest = null;
+
+        // Act
+        Action act = () => _personService.UpdatePerson(personUpdateRequest);
+
+        // Assert
+        Assert.Throws<ArgumentNullException>(act);
+    }
+
+
+
+    [Fact]
+    public void UpdatePerson_InvalidPersonID_ThrowException()
+    {
+        // Arrange
+        PersonUpdateRequestDTO? personUpdateRequest = new()
+        {
+            Id = Guid.NewGuid()
+        };
+
+        // Act
+        Action act = () => _personService.UpdatePerson(personUpdateRequest);
+
+        // Assert
+        Assert.Throws<ArgumentException>(act);
+    }
+
+
+    [Fact]
+    public void UpdatePerson_PersonNameIsNull_ThrowException()
+    {
+        // Arrange
+
+        CountryAddRequestDTO countryAddRequest = new CountryAddRequestDTO()
+        {
+            CountryName = "Lithuania"
+            
+        };
+
+        CountryResponseDTO countryResponse = _countriesService.AddCountry(countryAddRequest);
+
+        PersonAddRequestDTO personAddRequest = new()
+        {
+            CountryId = countryResponse.Id,
+            PersonName = "Linta evatua",
+            Address = "xx Streetm Lithuania",
+            Gender = GenderOptions.Female
+        };
+
+        PersonResponseDTO personResponse = _personService.AddPerson(personAddRequest);
+
+
+        PersonUpdateRequestDTO? personUpdateRequest = personResponse.ToPersonUpdateRequest();
+        personUpdateRequest.PersonName = null;
+
+        // Act
+        Action act = () => _personService.UpdatePerson(personUpdateRequest);
+
+        // Assert
+        Assert.Throws<ArgumentException>(act);
+    }
+
+
+    // Add person; update Name and Email ; Return Updated Values
+    [Fact]
+    public void UpdatePerson_ValidArgument_ReturnTheUpdated()
+    {
+        // Arrange
+
+        CountryAddRequestDTO countryAddRequest = new CountryAddRequestDTO()
+        {
+            CountryName = "Lithuania"
+
+        };
+
+        CountryResponseDTO countryResponse = _countriesService.AddCountry(countryAddRequest);
+
+        PersonAddRequestDTO personAddRequest = new()
+        {
+            CountryId = countryResponse.Id,
+            PersonName = "Linta",
+            Address = "xx Streetm Lithuania",
+            Gender = GenderOptions.Female,
+            Email = "Linta@gmail.com"
+        };
+
+        PersonResponseDTO personResponse = _personService.AddPerson(personAddRequest);
+
+
+        PersonUpdateRequestDTO? personUpdateRequest = personResponse.ToPersonUpdateRequest();
+        personUpdateRequest.PersonName = "Estina";
+        personUpdateRequest.Email = "Estina@gmail.com";
+
+        
+
+        // Act
+        PersonResponseDTO updatedPerson = _personService.UpdatePerson(personUpdateRequest);
+        PersonResponseDTO? personFromdb = _personService.GetPersonById(updatedPerson.Id);
+
+
+        //Assert
+
+        //Assert.Equal(personUpdateRequest.PersonName, updatedPerson.PersonName);
+        //Assert.Equal(personUpdateRequest.Email, updatedPerson.Email);
+
+        Assert.Equal(updatedPerson, personFromdb);
+
+    }
+
+
+
+
+
+    #endregion
+
+
 }

@@ -19,6 +19,6 @@ public interface IPersonService
 
     List<PersonResponseDTO> GetSortedPersons(List<PersonResponseDTO> allpersons, string sortedBy, SortedOrderOptions SortOrder);
 
-    
 
+    PersonResponseDTO UpdatePerson(PersonUpdateRequestDTO? model);
 }
