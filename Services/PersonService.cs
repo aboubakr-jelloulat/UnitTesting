@@ -196,6 +196,27 @@ public class PersonService : IPersonService
 
     public PersonResponseDTO UpdatePerson(PersonUpdateRequestDTO? model)
     {
-        throw new NotImplementedException();
+        if (model is null)
+            throw new ArgumentNullException();
+
+        // Extention Methode To Validate All Properties
+        model.ValidateModel();
+
+        Person? personFromdb = _people.FirstOrDefault(p => p.Id == model.Id );
+        if (personFromdb is null)
+            throw new ArgumentNullException("Given Person Id is Not matched");
+
+
+        personFromdb.Id = model.Id;
+        personFromdb.PersonName = model.PersonName;
+        personFromdb.Email = model.Email;
+        personFromdb.Adress = model.Address;
+        personFromdb.CountryId = model.CountryId;
+        personFromdb.DateOfBirth = model.DateOfBirth;
+        personFromdb.Gender = model.Gender.ToString();
+        personFromdb.ReceiveNewsLetters = model.ReceiveNewsLetters;
+        
+
+        return personFromdb.ToPersonResponse();
     }
 }
