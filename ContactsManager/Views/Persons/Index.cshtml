@@ -1,0 +1,159 @@
+﻿@model List<PersonViewModel>
+
+@{
+    ViewData["Title"] = "Contacts";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <div>
+        <h2 class="page-title mb-0">
+            Contacts
+        </h2>
+        <p class="page-subtitle">Manage your contacts easily</p>
+    </div>
+
+    <a asp-controller="Persons" asp-action="Create" class="btn app-btn">
+        <i class="fa fa-plus"></i> Add Contact
+    </a>
+</div>
+
+<!-- SEARCH BAR -->
+<form method="get" asp-action="Index"
+      class="mb-4 p-3 bg-white rounded shadow-sm">
+
+    <div class="row g-2 align-items-center">
+
+        <!-- FIELD SELECT -->
+        <div class="col-md-3">
+            <select name="searchBy" class="form-select">
+                @foreach (var field in ViewBag.SearchFields)
+                {
+                    <option value="@field.Key"
+                            selected="@(Context.Request.Query["searchBy"] == field.Key)">
+                        @field.Value
+                    </option>
+                }
+            </select>
+        </div>
+
+        <!-- SEARCH INPUT -->
+        <div class="col-md-6">
+            <input type="text"
+                   name="searchString"
+                   value="@Context.Request.Query["searchString"]"
+                   class="form-control"
+                   placeholder="Search contacts..." />
+        </div>
+
+        <!-- SEARCH BUTTON -->
+        <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-search"></i> Search
+            </button>
+        </div>
+
+        <!-- CLEAR BUTTON -->
+        <div class="col-md-1 d-grid">
+            <a asp-action="Index" class="btn btn-light border">
+                <i class="fa fa-rotate-left"></i>
+            </a>
+        </div>
+
+    </div>
+</form>
+
+<!-- EMPTY STATE -->
+@if (!Model.Any())
+{
+    <div class="text-center text-muted mt-5">
+        <i class="fa-regular fa-face-smile fa-2x mb-2"></i>
+        <p>No contacts found. Try adding one.</p>
+    </div>
+}
+else
+{
+    <!-- TABLE -->
+    <div class="table-responsive">
+        <table class="table align-middle">
+
+            <thead class="border-bottom">
+                <tr class="text-muted small">
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>DOB</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Country</th>
+                    <th>Address</th>
+                    <th class="text-center">Newsletter</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+
+                        <!-- NAME -->
+                        <td class="fw-medium">@p.PersonName</td>
+
+                        <!-- EMAIL -->
+                        <td class="text-muted">@p.Email</td>
+
+                        <!-- DOB -->
+                        <td>
+                            @(p.DateOfBirth?.ToString("dd MMM yyyy") ?? "-")
+                        </td>
+
+                        <!-- AGE -->
+                        <td>
+                            @(p.Age?.ToString("0") ?? "-")
+                        </td>
+
+                        <!-- GENDER -->
+                        <td>
+                            <span class="badge bg-light text-dark border">
+                                @p.Gender
+                            </span>
+                        </td>
+
+                        <!-- COUNTRY -->
+                        <td>@p.Country</td>
+
+                        <!-- ADDRESS -->
+                        <td class="text-muted small">@p.Address</td>
+
+                        <!-- NEWSLETTER -->
+                        <td class="text-center">
+                            @if (p.ReceiveNewsLetters)
+                            {
+                                <i class="fa fa-check text-success"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-xmark text-secondary"></i>
+                            }
+                        </td>
+
+                        <!-- ACTIONS -->
+                        <td class="text-end">
+                            <a asp-action="Edit" asp-route-id="@p.Id"
+                                   class="text-primary me-2">
+                                <i class="fa fa-pen"></i>
+                            </a>
+
+                            <a asp-action="Delete" asp-route-id="@p.Id"
+                                   class="text-danger">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+}

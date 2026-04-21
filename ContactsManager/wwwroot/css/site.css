@@ -1,31 +1,142 @@
-html {
-  font-size: 14px;
+
+/* ===== GLOBAL ===== */
+body.app-body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #f7f8fa;
+    color: #1f2937;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+/* Container */
+.app-container {
+    margin-top: 30px;
+    margin-bottom: 40px;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+/* ===== NAVBAR ===== */
+.app-navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #eee;
+    padding: 12px 0;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.app-logo {
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.5px;
 }
 
-body {
-  margin-bottom: 60px;
+.app-link {
+    color: #555;
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.app-link:hover {
+    color: #000;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.app-btn {
+    background-color: #2563eb;
+    color: white;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 14px;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.app-btn:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+/* ===== TABLE ===== */
+table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table thead th {
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+}
+
+table tbody tr {
+    transition: background 0.2s ease;
+}
+
+table tbody tr:hover {
+    background-color: #f3f4f6;
+}
+
+/* ===== TEXT ===== */
+h1, h2, h3 {
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+/* ===== BADGES ===== */
+.badge {
+    font-size: 12px;
+    border-radius: 8px;
+    padding: 4px 8px;
+}
+
+/* ===== FOOTER ===== */
+.app-footer {
+    border-top: 1px solid #eee;
+    padding: 15px 0;
+    background: #fff;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* ===== SMALL DETAILS ===== */
+.text-muted {
+    color: #6b7280 !important;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+table td, table th {
+    vertical-align: middle;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 5px 8px;
+    border-radius: 8px;
+}
+
+.page-subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+}
+
+
+/* search bar in index  */
+
+.search-box {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.form-select,
+.form-control {
+    border-radius: 8px;
+}
+
+.btn {
+    border-radius: 8px;
 }

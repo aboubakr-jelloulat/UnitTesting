@@ -18,10 +18,59 @@ public class PersonService : IPersonService
     private readonly ICountriesService _countriesService;
 
 
-    public PersonService()
+    public PersonService(bool initialize = true)
     {
+        _countriesService = new CountriesService(false);
+
         _people = new();
-        _countriesService = new CountriesService();
+
+        if (initialize)
+        {
+            _people.AddRange(new List<Person>()
+            {
+                new ()
+                {
+                    Id = Guid.NewGuid(),
+                    PersonName = "John Smith",
+                    Adress = "Helsinki, Finland",
+                    CountryId = Guid.Parse("7F516B57-8115-4BC6-8720-EC7EAE4F93C8"),
+                    DateOfBirth = new DateTime(1990, 8, 22),
+                    Email = "john.smith@example.com",
+                    Gender = GenderOptions.Male.ToString(),
+                    ReceiveNewsLetters = false
+                },
+
+                new ()
+                {
+                    Id = Guid.NewGuid(),
+                    PersonName = "Li Wei",
+                    Adress = "Shanghai, China",
+                    CountryId = Guid.Parse("CE4FB821-68F4-4C06-B16F-7D44647F2D41"),
+                    DateOfBirth = new DateTime(1988, 3, 10),
+                    Email = "li.wei@example.com",
+                    Gender = GenderOptions.Male.ToString(),
+                    ReceiveNewsLetters = true
+                },
+
+                new ()
+                {
+                    Id = Guid.NewGuid(),
+                    PersonName = "Anna Kask",
+                    Adress = "Tallinn, Estonia",
+                    CountryId = Guid.Parse("40EA2121-B73C-4DCE-8D95-368846A15ABE"),
+                    DateOfBirth = new DateTime(1997, 11, 5),
+                    Email = "anna.kask@example.com",
+                    Gender = GenderOptions.Female.ToString(),
+                    ReceiveNewsLetters = false
+                }
+
+            });
+        }
+
+        
+
+
+
     }
 
     
