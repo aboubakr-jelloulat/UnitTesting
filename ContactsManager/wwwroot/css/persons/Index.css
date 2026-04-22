@@ -1,0 +1,33 @@
+﻿
+.sort-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #212529;
+    transition: all 0.2s ease;
+}
+
+    .sort-link:hover {
+        background-color: #f8f9fa;
+        color: #0d6efd;
+    }
+
+    .sort-link i {
+        font-size: 12px;
+        color: #6c757d;
+    }
+
+    .sort-link.active-sort {
+        font-weight: 600;
+        color: #0d6efd;
+        background-color: #ffffff;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+        .sort-link.active-sort i {
+            color: #0d6efd;
+        }
+

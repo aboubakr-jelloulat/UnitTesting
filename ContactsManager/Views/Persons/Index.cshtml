@@ -4,6 +4,39 @@
     ViewData["Title"] = "Contacts";
 }
 
+@{
+    string GetSortOrder(string column)
+    {
+        if (ViewBag.CurrentSortedBy == column)
+        {
+            return ViewBag.CurrentSortedOrder == SortedOrderOptions.ASC
+                ? "DESC"
+                : "ASC";
+        }
+        return "ASC";
+    }
+
+    string GetSortIcon(string column)
+    {
+        if (ViewBag.CurrentSortedBy == column)
+        {
+            return ViewBag.CurrentSortedOrder == SortedOrderOptions.ASC
+                ? "fa-sort-up"
+                : "fa-sort-down";
+        }
+        return "fa-sort";
+    }
+
+    string GetSortClass(string column)
+    {
+        return ViewBag.CurrentSortedBy == column
+            ? "active-sort"
+            : "";
+    }
+}
+
+<link href="~/css/persons/Index.css" rel="stylesheet" />
+
 <div class="d-flex justify-content-between align-items-center mb-3">
 
     <div>
@@ -77,17 +110,74 @@ else
     <div class="table-responsive">
         <table class="table align-middle">
 
-            <thead class="border-bottom">
-                <tr class="text-muted small">
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>DOB</th>
-                    <th>Age</th>
+            <thead class="table-light">
+                <tr>
+
+                    <!-- NAME -->
+                    <th>
+                        <a asp-action="Index"
+                               asp-route-searchBy="@ViewBag.CurrentSearchBy"
+                               asp-route-searchString="@ViewBag.CurrentSearchString"
+                               asp-route-sortedBy="@nameof(PersonViewModel.PersonName)"
+                               asp-route-sortedOrder="@GetSortOrder(nameof(PersonViewModel.PersonName))"
+                               class="sort-link @GetSortClass(nameof(PersonViewModel.PersonName))">
+
+                            Name <i class="fa @GetSortIcon(nameof(PersonViewModel.PersonName))"></i>
+                        </a>
+                    </th>
+
+                    <!-- EMAIL -->
+                    <th>
+                        <a asp-action="Index"
+                               asp-route-searchBy="@ViewBag.CurrentSearchBy"
+                               asp-route-searchString="@ViewBag.CurrentSearchString"
+                               asp-route-sortedBy="@nameof(PersonViewModel.Email)"
+                               asp-route-sortedOrder="@GetSortOrder(nameof(PersonViewModel.Email))"
+                               class="sort-link @GetSortClass(nameof(PersonViewModel.Email))">
+
+                            Email <i class="fa @GetSortIcon(nameof(PersonViewModel.Email))"></i>
+                        </a>
+                    </th>
+
+                    <!-- DOB -->
+                    <th>
+                        <a asp-action="Index"
+                               asp-route-searchBy="@ViewBag.CurrentSearchBy"
+                               asp-route-searchString="@ViewBag.CurrentSearchString"
+                               asp-route-sortedBy="@nameof(PersonViewModel.DateOfBirth)"
+                               asp-route-sortedOrder="@GetSortOrder(nameof(PersonViewModel.DateOfBirth))"
+                               class="sort-link @GetSortClass(nameof(PersonViewModel.DateOfBirth))">
+
+                            DOB <i class="fa @GetSortIcon(nameof(PersonViewModel.DateOfBirth))"></i>
+                        </a>
+                    </th>
+
+                    <!-- AGE -->
+                    
+                    <th>
+                        <a asp-action="Index"
+                               asp-route-searchBy="@ViewBag.CurrentSearchBy"
+                               asp-route-searchString="@ViewBag.CurrentSearchString"
+                               asp-route-sortedBy="@nameof(PersonViewModel.Age)"
+                               asp-route-sortedOrder="@GetSortOrder(nameof(PersonViewModel.Age))"
+                               class="sort-link @GetSortClass(nameof(PersonViewModel.Age))">
+
+                            Age <i class="fa @GetSortIcon(nameof(PersonViewModel.Age))"></i>
+                        </a>
+                    </th>
+
+                    <!-- GENDER -->
                     <th>Gender</th>
-                    <th>Country</th>
+
+                    <!-- COUNTRY  -->
+                    <th> Country </th>
+
+                    <!-- ADDRESS -->
                     <th>Address</th>
+
                     <th class="text-center">Newsletter</th>
                     <th></th>
+
                 </tr>
             </thead>
 
