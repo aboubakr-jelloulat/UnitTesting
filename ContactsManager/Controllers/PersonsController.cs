@@ -1,5 +1,4 @@
-﻿using ContactsManager.ViewModels;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServiceContacts;
 using ServiceContacts.DTOs;
 using ServiceContacts.Enums;
@@ -27,6 +26,7 @@ public class PersonsController : Controller
         {
             {nameof(PersonResponseDTO.PersonName),  "Person Name"},
             {nameof(PersonResponseDTO.Email),       "Email"},
+            {nameof(PersonResponseDTO.Country),       "Country"},
             {nameof(PersonResponseDTO.Adress), "Address"},
         };
 
@@ -41,21 +41,7 @@ public class PersonsController : Controller
         persons = _personService.GetSortedPersons(persons, sortedBy, sortedOrder);
 
 
-        var result = persons.Select(p => new PersonViewModel
-        {
-            Id = p.Id,
-            PersonName = p.PersonName,
-            Email = p.Email,
-            DateOfBirth = p.DateOfBirth,
-            Gender = p.Gender,
-            Address = p.Adress,
-            ReceiveNewsLetters = p.ReceiveNewsLetters,
 
-            Age = p.DateOfBirth.HasValue ? DateTime.Now.Year - p.DateOfBirth.Value.Year : null,
-
-            Country = _countriesService.GetCountryById(p.CountryId)?.CountryName  
-        }).ToList();
-
-        return View(result);
+        return View(persons);
     }
 }

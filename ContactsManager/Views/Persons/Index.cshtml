@@ -1,4 +1,4 @@
-﻿@model List<PersonViewModel>
+﻿@model List<PersonResponseDTO>
 
 @{
     ViewData["Title"] = "Contacts";
@@ -118,11 +118,11 @@ else
                         <a asp-action="Index"
                                asp-route-searchBy="@ViewBag.CurrentSearchBy"
                                asp-route-searchString="@ViewBag.CurrentSearchString"
-                               asp-route-sortedBy="@nameof(PersonViewModel.PersonName)"
-                               asp-route-sortedOrder="@GetSortOrder(nameof(PersonViewModel.PersonName))"
-                               class="sort-link @GetSortClass(nameof(PersonViewModel.PersonName))">
+                               asp-route-sortedBy="@nameof(PersonResponseDTO.PersonName)"
+                               asp-route-sortedOrder="@GetSortOrder(nameof(PersonResponseDTO.PersonName))"
+                               class="sort-link @GetSortClass(nameof(PersonResponseDTO.PersonName))">
 
-                            Name <i class="fa @GetSortIcon(nameof(PersonViewModel.PersonName))"></i>
+                            Name <i class="fa @GetSortIcon(nameof(PersonResponseDTO.PersonName))"></i>
                         </a>
                     </th>
 
@@ -131,11 +131,11 @@ else
                         <a asp-action="Index"
                                asp-route-searchBy="@ViewBag.CurrentSearchBy"
                                asp-route-searchString="@ViewBag.CurrentSearchString"
-                               asp-route-sortedBy="@nameof(PersonViewModel.Email)"
-                               asp-route-sortedOrder="@GetSortOrder(nameof(PersonViewModel.Email))"
-                               class="sort-link @GetSortClass(nameof(PersonViewModel.Email))">
+                               asp-route-sortedBy="@nameof(PersonResponseDTO.Email)"
+                               asp-route-sortedOrder="@GetSortOrder(nameof(PersonResponseDTO.Email))"
+                               class="sort-link @GetSortClass(nameof(PersonResponseDTO.Email))">
 
-                            Email <i class="fa @GetSortIcon(nameof(PersonViewModel.Email))"></i>
+                            Email <i class="fa @GetSortIcon(nameof(PersonResponseDTO.Email))"></i>
                         </a>
                     </th>
 
@@ -144,11 +144,11 @@ else
                         <a asp-action="Index"
                                asp-route-searchBy="@ViewBag.CurrentSearchBy"
                                asp-route-searchString="@ViewBag.CurrentSearchString"
-                               asp-route-sortedBy="@nameof(PersonViewModel.DateOfBirth)"
-                               asp-route-sortedOrder="@GetSortOrder(nameof(PersonViewModel.DateOfBirth))"
-                               class="sort-link @GetSortClass(nameof(PersonViewModel.DateOfBirth))">
+                               asp-route-sortedBy="@nameof(PersonResponseDTO.DateOfBirth)"
+                               asp-route-sortedOrder="@GetSortOrder(nameof(PersonResponseDTO.DateOfBirth))"
+                               class="sort-link @GetSortClass(nameof(PersonResponseDTO.DateOfBirth))">
 
-                            DOB <i class="fa @GetSortIcon(nameof(PersonViewModel.DateOfBirth))"></i>
+                            DOB <i class="fa @GetSortIcon(nameof(PersonResponseDTO.DateOfBirth))"></i>
                         </a>
                     </th>
 
@@ -158,11 +158,11 @@ else
                         <a asp-action="Index"
                                asp-route-searchBy="@ViewBag.CurrentSearchBy"
                                asp-route-searchString="@ViewBag.CurrentSearchString"
-                               asp-route-sortedBy="@nameof(PersonViewModel.Age)"
-                               asp-route-sortedOrder="@GetSortOrder(nameof(PersonViewModel.Age))"
-                               class="sort-link @GetSortClass(nameof(PersonViewModel.Age))">
+                               asp-route-sortedBy="@nameof(PersonResponseDTO.Age)"
+                               asp-route-sortedOrder="@GetSortOrder(nameof(PersonResponseDTO.Age))"
+                               class="sort-link @GetSortClass(nameof(PersonResponseDTO.Age))">
 
-                            Age <i class="fa @GetSortIcon(nameof(PersonViewModel.Age))"></i>
+                            Age <i class="fa @GetSortIcon(nameof(PersonResponseDTO.Age))"></i>
                         </a>
                     </th>
 
@@ -170,7 +170,17 @@ else
                     <th>Gender</th>
 
                     <!-- COUNTRY  -->
-                    <th> Country </th>
+                    <th>
+                        <a asp-action="Index"
+                               asp-route-searchBy="@ViewBag.CurrentSearchBy"
+                               asp-route-searchString="@ViewBag.CurrentSearchString"
+                               asp-route-sortedBy="@nameof(PersonResponseDTO.Country)"
+                               asp-route-sortedOrder="@GetSortOrder(nameof(PersonResponseDTO.Country))"
+                               class="sort-link @GetSortClass(nameof(PersonResponseDTO.Country))">
+
+                            Country <i class="fa @GetSortIcon(nameof(PersonResponseDTO.Country))"></i>
+                        </a>
+                    </th>
 
                     <!-- ADDRESS -->
                     <th>Address</th>
@@ -213,7 +223,7 @@ else
                         <td>@p.Country</td>
 
                         <!-- ADDRESS -->
-                        <td class="text-muted small">@p.Address</td>
+                        <td class="text-muted small">@p.Adress</td>
 
                         <!-- NEWSLETTER -->
                         <td class="text-center">

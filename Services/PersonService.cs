@@ -18,9 +18,9 @@ public class PersonService : IPersonService
     private readonly ICountriesService _countriesService;
 
 
-    public PersonService(bool initialize = true)
+    public PersonService(ICountriesService countriesService, bool initialize = true)
     {
-        _countriesService = new CountriesService(false);
+        _countriesService = countriesService;
 
         _people = new();
 
@@ -110,7 +110,7 @@ public class PersonService : IPersonService
 
     public List<PersonResponseDTO> GetAllPersons()
     {
-        return _people.Select(p => p.ToPersonResponse()).ToList();
+        return _people.Select(p => _ConvertPersonToPersonResponse(p)).ToList();
     }
 
     public PersonResponseDTO? GetPersonById(Guid? id)
@@ -123,7 +123,7 @@ public class PersonService : IPersonService
         if (person is null)
             return null;
 
-        return person.ToPersonResponse();
+        return _ConvertPersonToPersonResponse(person);
     }
 
     
@@ -267,7 +267,7 @@ public class PersonService : IPersonService
         personFromdb.ReceiveNewsLetters = model.ReceiveNewsLetters;
         
 
-        return personFromdb.ToPersonResponse();
+        return _ConvertPersonToPersonResponse(personFromdb);
     }
 
 
