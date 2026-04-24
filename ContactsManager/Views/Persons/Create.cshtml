@@ -1,0 +1,102 @@
+﻿@model PersonAddRequestDTO
+
+@{
+    ViewData["Title"] = "Add Contact";
+}
+
+<link href="~/css/persons/create.css" rel="stylesheet" />
+
+<div class="create-container">
+    <!-- Header -->
+    <div class="create-header">
+        <div>
+            <h2 class="page-title mb-0">Add New Contact</h2>
+            <p class="page-subtitle">Fill in the details to create a new contact</p>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <form asp-action="Create" method="post" class="create-form">
+        <!-- General Form Errors (from ModelState.AddModelError) -->
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+        <!-- Name Field -->
+        <div class="form-group">
+            <label asp-for="PersonName" class="form-label">Full Name *</label>
+            <input asp-for="PersonName" class="form-control" placeholder="Enter full name" />
+            <span asp-validation-for="PersonName" class="text-danger small"></span>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+            <label asp-for="Email" class="form-label">Email Address</label>
+            <input asp-for="Email" type="email" class="form-control" placeholder="Enter email address" />
+            <span asp-validation-for="Email" class="text-danger small"></span>
+        </div>
+
+        <!--DOB & Gender -->
+        <div class="form-row">
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="form-label">Date of Birth</label>
+                <input asp-for="DateOfBirth" type="date" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Gender" class="form-label">Gender</label>
+                <select asp-for="Gender" class="form-control">
+                    <option value=""> Select Gender </option>
+                    @foreach (GenderOptions gender in ViewBag.Genders ?? new List<GenderOptions>())
+                    {
+                        <option value="@gender">@gender</option>
+                    }
+                </select>
+                <span asp-validation-for="Gender" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <!-- Address Field -->
+        <div class="form-group">
+            <label asp-for="Address" class="form-label">Address</label>
+            <input asp-for="Address" class="form-control" placeholder="Enter address" />
+            <span asp-validation-for="Address" class="text-danger small"></span>
+        </div>
+
+        <!-- Country Field -->
+        <div class="form-group">
+            <label asp-for="CountryId" class="form-label">Country</label>
+            <select asp-for="CountryId" class="form-control">
+                <option value=""> Select Country</option>
+                @foreach (var country in ViewBag.Countries ?? new List<CountryResponseDTO>())
+                {
+                    <option value="@country.Id">@country.CountryName</option>
+                }
+            </select>
+            <span asp-validation-for="CountryId" class="text-danger small"></span>
+        </div>
+
+        <!-- Newsletter Checkbox -->
+        <div class="form-check">
+            <input asp-for="ReceiveNewsLetters" type="checkbox" class="form-check-input" id="newsletter" />
+            <label class="form-check-label" for="newsletter">
+                I'd like to receive newsletters
+            </label>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn app-btn">
+                <i class="fa fa-plus"></i> Create Contact
+            </button>
+            <a asp-action="Index" class="btn btn-light border">
+                <i class="fa fa-arrow-left"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
