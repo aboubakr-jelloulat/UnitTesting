@@ -101,7 +101,7 @@ public class PersonsController : Controller
 
 
 
-    [Route("[action]")]
+    [Route("[action]/{id}")]
     [HttpGet]
     public IActionResult Update(Guid id)
     {
@@ -159,7 +159,32 @@ public class PersonsController : Controller
         }
     }
 
+    [Route("[action]/{id}")]
+    [HttpGet]
+    public IActionResult Delete(Guid id)
+    {
+        var person = _personService.GetPersonById(id);
 
+        if (person == null)
+            return RedirectToAction("Index");
 
+        return View(person);
+    }
+
+    [Route("[action]/{id}")]
+    [HttpPost]
+    public IActionResult DeleteConfirmed(Guid id)
+    {
+        try
+        {
+            _personService.DeletePerson(id);
+            return RedirectToAction("Index");
+        }
+        catch (ArgumentException ex)
+        {
+            TempData["Error"] = ex.Message;
+            return RedirectToAction("Index");
+        }
+    }
 
 }
