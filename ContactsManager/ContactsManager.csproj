@@ -10,6 +10,9 @@
     <ProjectReference Include="..\Entities\Entities.csproj" />
     <ProjectReference Include="..\ServiceContacts\ServiceContacts.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
+	  
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.7" />
+	  
   </ItemGroup>
 
 </Project>

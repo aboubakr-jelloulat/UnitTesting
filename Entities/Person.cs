@@ -28,7 +28,4 @@ public class Person
     public Guid? CountryId { get; set; }
 
     public bool ReceiveNewsLetters { get; set; }
-
- 
-
 }
