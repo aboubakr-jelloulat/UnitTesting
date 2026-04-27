@@ -5,10 +5,10 @@ namespace ServiceContacts;
 public interface ICountriesService
 {
 
-    CountryResponseDTO AddCountry(CountryAddRequestDTO country);
+    Task<CountryResponseDTO> AddCountry(CountryAddRequestDTO model);
 
-    List<CountryResponseDTO> GetAllCountries();
+    Task<List<CountryResponseDTO>> GetAllCountries();
 
-    CountryResponseDTO? GetCountryById(Guid? id);
+    Task<CountryResponseDTO?> GetCountryById(Guid? id);
 
 }

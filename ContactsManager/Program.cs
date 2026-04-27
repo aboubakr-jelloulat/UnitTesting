@@ -7,9 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddSingleton<ICountriesService, CountriesService>();
+builder.Services.AddScoped<ICountriesService, CountriesService>();
 
-builder.Services.AddSingleton<IPersonService, PersonService>();
+builder.Services.AddScoped<IPersonService, PersonService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {

@@ -14,10 +14,11 @@ public class PersonServiceTest
     private readonly IPersonService _personService;
     private readonly ICountriesService _countriesService;
 
+  
     public PersonServiceTest()
     {
-        _personService = new PersonService(false);
         _countriesService = new CountriesService(false);
+        _personService = new PersonService(_countriesService, false);
     }
 
     public GenderOptions? GenderOption { get; private set; }
@@ -281,6 +282,7 @@ public class PersonServiceTest
         }
 
         var persons = _personService.GetFiltredPersons(nameof(Person.PersonName), String.Empty);
+        
 
         foreach (var person in persons)
         {

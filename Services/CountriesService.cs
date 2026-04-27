@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.EntityFrameworkCore;
 using ServiceContacts;
 using ServiceContacts.DTOs;
 
@@ -6,35 +7,16 @@ namespace Services;
 
 public class CountriesService : ICountriesService
 {
-    private readonly List<Country> _countries;
+    private readonly ApplicationDbContext _db;
 
-    public CountriesService(bool initialize = true)
+    public CountriesService(ApplicationDbContext db)
     {
-        _countries = new();
-
-        if (initialize)
-        {
-            _countries.AddRange(new List<Country>()
-            {
-                new Country() { Id = Guid.Parse("7F516B57-8115-4BC6-8720-EC7EAE4F93C8"), CountryName = "Finland" },
-
-                new Country() { Id = Guid.Parse("06706AC8-6F04-44EB-8E02-C545DBAD1633"), CountryName = "Norway" },
-
-                new Country() { Id = Guid.Parse("CE4FB821-68F4-4C06-B16F-7D44647F2D41"), CountryName = "China" },
-
-                new Country() { Id = Guid.Parse("40EA2121-B73C-4DCE-8D95-368846A15ABE"), CountryName = "Estonia" }
-            });
-
-
-        }
-
-
-
+        _db = db;
     }
 
-    
 
-    public CountryResponseDTO AddCountry(CountryAddRequestDTO model)
+
+    public async Task<CountryResponseDTO> AddCountry(CountryAddRequestDTO model)
     {
         if (model is null)
             throw new ArgumentNullException(nameof(model));
@@ -42,32 +24,33 @@ public class CountriesService : ICountriesService
         if (string.IsNullOrWhiteSpace(model.CountryName))
             throw new ArgumentException("Country name cannot be null or empty");
 
-        if (_countries.Any(c => c.CountryName == model.CountryName))
+        var exists = await _db.Countries.AnyAsync(c => c.CountryName == model.CountryName);
+
+        if (exists)
             throw new ArgumentException("Country already exists");
 
-        Country country = model.ToCountry();
-
+        var country = model.ToCountry();
         country.Id = Guid.NewGuid();
 
-        _countries.Add(country);
+        await _db.Countries.AddAsync(country);
+
+        await _db.SaveChangesAsync();
 
         return country.ToCountryResponse();
     }
 
-    
 
 
-   
-    public List<CountryResponseDTO> GetAllCountries()
+    public async Task<List<CountryResponseDTO>> GetAllCountries()
     {
-        return _countries.Select(country => country.ToCountryResponse()).ToList();
+        return await _db.Countries.Select(country => country.ToCountryResponse()).ToListAsync();
     }
 
-    public CountryResponseDTO? GetCountryById(Guid? id)
+    public async Task<CountryResponseDTO?> GetCountryById(Guid? id)
     {
         if (id is null) return null;
 
-        Country? country = _countries.FirstOrDefault(c => c.Id == id);
+        Country? country = await _db.Countries.FirstOrDefaultAsync(c => c.Id == id);
 
         if (country is null) return null;
 

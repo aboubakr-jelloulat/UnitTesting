@@ -8,19 +8,18 @@ namespace ServiceContacts;
 
 public interface IPersonService
 {
-    PersonResponseDTO AddPerson(PersonAddRequestDTO? model);
+    Task<PersonResponseDTO> AddPerson(PersonAddRequestDTO? model);
 
-    List<PersonResponseDTO> GetAllPersons();
+    Task<List<PersonResponseDTO>> GetAllPersons();
 
-    PersonResponseDTO? GetPersonById(Guid? id);
+    Task<PersonResponseDTO?> GetPersonById(Guid? id);
 
-    List<PersonResponseDTO> GetFiltredPersons(string searchBy, string? searchString);
-
+    Task<List<PersonResponseDTO>> GetFiltredPersons(string searchBy, string? searchString);
 
     List<PersonResponseDTO> GetSortedPersons(List<PersonResponseDTO> allpersons, string sortedBy, SortedOrderOptions SortOrder);
 
 
-    PersonResponseDTO UpdatePerson(PersonUpdateRequestDTO? model);
+    Task<PersonResponseDTO> UpdatePerson(PersonUpdateRequestDTO? model);
 
-    bool DeletePerson(Guid? Id);
+    Task<bool> DeletePerson(Guid? Id);
 }
