@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 using ServiceContacts;
 using ServiceContacts.DTOs;
 using ServiceContacts.Enums;
@@ -167,4 +169,21 @@ public class PersonsController : Controller
             return RedirectToAction("Index");
         }
     }
+
+    [Route("[action]")]
+    [HttpGet]
+    public async Task<IActionResult> PersonPDF()
+    {
+        var personResponses = await _personService.GetAllPersons();
+
+
+        return new ViewAsPdf("PersonPDF", personResponses)
+        {
+            PageSize = Size.A4,
+            PageOrientation = Orientation.Portrait,
+            CustomSwitches = "--print-media-type --enable-local-file-access --background"
+        };
+    }
+
+
 }

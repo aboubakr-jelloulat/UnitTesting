@@ -19,6 +19,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 var app = builder.Build();
 
 
+// Download PDF 
+Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
+
 app.UseRouting();
 
 app.UseStaticFiles();

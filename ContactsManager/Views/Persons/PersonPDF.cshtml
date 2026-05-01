@@ -1,0 +1,99 @@
+﻿@model List<PersonResponseDTO>
+
+@* ovveride _Lyout so no _Lyout view *@
+
+@{
+    Layout = null ;
+}
+
+<div>
+    <h2 class="page-title mb-0">
+        Contacts
+    </h2>
+    <p class="page-subtitle">Manage your contacts easily</p>
+</div>
+
+
+<!-- EMPTY STATE -->
+@if (!Model.Any())
+{
+    <div class="text-center text-muted mt-5">
+        <i class="fa-regular fa-face-smile fa-2x mb-2"></i>
+        <p>No contacts found. Try adding one.</p>
+    </div>
+}
+else
+{
+    <!-- TABLE -->
+    <div class="table-responsive">
+        <table class="table align-middle">
+
+            <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>DOB</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Country</th>
+                    <th>Address</th>
+                    <th>Newsletter</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+
+                        <!-- NAME -->
+                        <td class="fw-medium">@p.PersonName</td>
+
+                        <!-- EMAIL -->
+                        <td class="text-muted">@p.Email</td>
+
+                        <!-- DOB -->
+                        <td>
+                            @(p.DateOfBirth?.ToString("dd MMM yyyy") ?? "-")
+                        </td>
+
+                        <!-- AGE -->
+                        <td>
+                            @(p.Age?.ToString("0") ?? "-")
+                        </td>
+
+                        <!-- GENDER -->
+                        <td>
+                            <span class="badge bg-light text-dark border">
+                                @p.Gender
+                            </span>
+                        </td>
+
+                        <!-- COUNTRY -->
+                        <td>@p.Country</td>
+
+                        <!-- ADDRESS -->
+                        <td class="text-muted small">@p.Adress</td>
+
+                        <!-- NEWSLETTER -->
+                        <td class="text-center">
+                            @if (p.ReceiveNewsLetters)
+                            {
+                                <i class="fa fa-check text-success"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-xmark text-secondary"></i>
+                            }
+                        </td>
+
+                      
+
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+}
