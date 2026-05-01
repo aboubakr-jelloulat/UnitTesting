@@ -1,77 +1,64 @@
-﻿using System;
-using Xunit;
-using ServiceContacts.DTOs;
+﻿using Entities;
 using ServiceContacts;
+using ServiceContacts.DTOs;
 using Services;
+using System;
+using Xunit;
 
 namespace ContactsManager.Test;
 
 public class CountriesServiceTest
 {
     private readonly ICountriesService _countriesService;
+    private readonly ApplicationDbContext _db;
 
-    public CountriesServiceTest()
+    public CountriesServiceTest(ApplicationDbContext db)
     {
-        _countriesService = new CountriesService(false);
+        _db = db;
+        _countriesService = new CountriesService(_db);
     }
 
     #region AddCountryUniteTest
 
-    // Null request -> should throw ArgumentNullException
     [Fact]
-    public void AddCountry_NullRequest_ThrowsArgumentNullException()
+    public async Task AddCountry_NullRequest_ThrowsArgumentNullException()
     {
-        // Arrange
         CountryAddRequestDTO? request = null;
 
-        // Act
-        Action act = () => _countriesService.AddCountry(request);
+        Func<Task> act = async () => await _countriesService.AddCountry(request!);
 
-        // Assert
-        Assert.Throws<ArgumentNullException>(act);
+        await Assert.ThrowsAsync<ArgumentNullException>(act);
     }
 
-    // Null or empty country name -> should throw ArgumentException
     [Fact]
-    public void AddCountry_NullCountryName_ThrowsArgumentException()
+    public async Task AddCountry_NullCountryName_ThrowsArgumentException()
     {
-        // Arrange
         var request = new CountryAddRequestDTO { CountryName = null };
 
-        // Act
-        Action act = () => _countriesService.AddCountry(request);
+        Func<Task> act = async () => await _countriesService.AddCountry(request);
 
-        // Assert
-        Assert.Throws<ArgumentException>(act);
+        await Assert.ThrowsAsync<ArgumentException>(act);
     }
 
-    // Duplicate country -> should throw ArgumentException
     [Fact]
-    public void AddCountry_DuplicateCountryName_ThrowsArgumentException()
+    public async Task AddCountry_DuplicateCountryName_ThrowsArgumentException()
     {
-        // Arrange
         var request = new CountryAddRequestDTO { CountryName = "China" };
 
-        _countriesService.AddCountry(request); // first insert
+        await _countriesService.AddCountry(request);
 
-        // Act
-        Action act = () => _countriesService.AddCountry(request);
+        Func<Task> act = async () => await _countriesService.AddCountry(request);
 
-        // Assert
-        Assert.Throws<ArgumentException>(act);
+        await Assert.ThrowsAsync<ArgumentException>(act);
     }
 
-    // Valid request -> should return response with non empty Id
     [Fact]
-    public void AddCountry_ValidRequest_ReturnsCountryResponse()
+    public async Task AddCountry_ValidRequest_ReturnsCountryResponse()
     {
-        // Arrange
         var request = new CountryAddRequestDTO { CountryName = "Norway" };
 
-        // Act
-        var response = _countriesService.AddCountry(request);
+        var response = await _countriesService.AddCountry(request);
 
-        // Assert
         Assert.NotEqual(Guid.Empty, response.Id);
     }
 
@@ -80,22 +67,17 @@ public class CountriesServiceTest
 
     #region GetAllCountriesUniteTest
 
-    // Empty list initially
     [Fact]
-    public void GetAllCountries_Initial_ShouldBeEmpty()
+    public async Task GetAllCountries_Initial_ShouldBeEmpty()
     {
-        // Act
-        var countries = _countriesService.GetAllCountries();
+        var countries = await _countriesService.GetAllCountries();
 
-        // Assert
         Assert.Empty(countries);
     }
 
-    // After adding → should return all countries
     [Fact]
-    public void GetAllCountries_AfterAddingCountries_ReturnsList()
+    public async Task GetAllCountries_AfterAddingCountries_ReturnsList()
     {
-        // Arrange
         var addCountries = new List<CountryAddRequestDTO>
         {
             new() { CountryName = "Sweden" },
@@ -105,25 +87,19 @@ public class CountriesServiceTest
 
         var expected = new List<CountryResponseDTO>();
 
-        // Act
         foreach (var c in addCountries)
         {
-            var response = _countriesService.AddCountry(c);
+            var response = await _countriesService.AddCountry(c);
             expected.Add(response);
         }
 
-        var countries = _countriesService.GetAllCountries();
+        var countries = await _countriesService.GetAllCountries();
 
-        // Assert
         Assert.Equal(expected.Count, countries.Count);
 
         foreach (var item in expected)
         {
-            //Assert.Contains(countries, c => c.Id == item.Id);
-
-            // or override the Equal, because Equal is compare the refrences 
-
-            Assert.Contains(item, countries); // Contains by default use Equal
+            Assert.Contains(item, countries);
         }
     }
 
@@ -133,32 +109,26 @@ public class CountriesServiceTest
     #region GetCountryById
 
     [Fact]
-    public void GetCountryById_NullId_ReturnsNull()
+    public async Task GetCountryById_NullId_ReturnsNull()
     {
-        // Arrange
         Guid? id = null;
 
-        // Act
-        var response = _countriesService.GetCountryById(id);
+        var response = await _countriesService.GetCountryById(id);
 
-        // Assert
         Assert.Null(response);
     }
 
     [Fact]
-    public void AddCountry_ValidInput_CanBeRetrievedById()
+    public async Task AddCountry_ValidInput_CanBeRetrievedById()
     {
-        // Arrange
         var request = new CountryAddRequestDTO
         {
             CountryName = "Palestine"
         };
 
-        // Act
-        var addedCountry = _countriesService.AddCountry(request);
-        var retrievedCountry = _countriesService.GetCountryById(addedCountry.Id);
+        var addedCountry = await _countriesService.AddCountry(request);
+        var retrievedCountry = await _countriesService.GetCountryById(addedCountry.Id);
 
-        // Assert
         Assert.NotNull(retrievedCountry);
         Assert.Equal(addedCountry, retrievedCountry);
     }

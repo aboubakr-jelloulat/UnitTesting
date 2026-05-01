@@ -29,11 +29,13 @@ public class PersonService : IPersonService
 
 
 
+   
+
     private async Task<PersonResponseDTO> _ConvertPersonToPersonResponse(Person person)
     {
         var personResponse = person.ToPersonResponse();
 
-        var country = await _countriesService.GetCountryById(person.CountryId);
+        var country = await _db.Countries.AsNoTracking().FirstOrDefaultAsync(c => c.Id == person.CountryId);
 
         personResponse.Country = country?.CountryName;
 
@@ -63,13 +65,18 @@ public class PersonService : IPersonService
         return await _ConvertPersonToPersonResponse(person);
     }
 
+  
+
     public async Task<List<PersonResponseDTO>> GetAllPersons()
     {
         var persons = await _db.Persons.ToListAsync();
 
-        var result = await Task.WhenAll(persons.Select(p => _ConvertPersonToPersonResponse(p)));
-
-        return result.ToList();
+        var result = new List<PersonResponseDTO>();
+        foreach (var person in persons)
+        {
+            result.Add(await _ConvertPersonToPersonResponse(person));
+        }
+        return result;
     }
 
     public async Task<PersonResponseDTO?> GetPersonById(Guid? id)
